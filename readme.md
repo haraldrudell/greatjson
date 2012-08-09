@@ -1,6 +1,6 @@
 # Great Json
 
-The **greatjson** module is a **JSON.parse** replacement parser providing clearer syntax messages with line and column numbers, expected tokens and offending text. In addition, errors are returned instead of thrown.
+The **greatjson** module is a **JSON.parse** replacement providing clearer syntax messages with line and column numbers, expected tokens and offending text. In addition, errors are returned instead of thrown.
 
 ## Get It Now
 
