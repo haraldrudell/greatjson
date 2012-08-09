@@ -1,6 +1,6 @@
 # Great Json
 
-The **greatjson** module is a **JSON.parse** replacement parser providing meaningful syntax messages with source location, expected tokens and offending text. In addition, errors are returned instead of thrown.
+The **greatjson** module is a **JSON.parse** replacement parser providing clearer syntax messages with line and column numbers, expected tokens and offending text. In addition, errors are returned instead of thrown.
 
 ## Get It Now
 
@@ -15,31 +15,28 @@ var greatjson = require('greatjson')
 var result, error
 
 // example how to use successfully
-if (!((result = greatjson.parse('17')) instanceof Error)) console.log('It works! I got:', result)
+if (!((result = greatjson.parse('17')) instanceof Error))
+	// It works! I got: 17
+	console.log('It works! I got:', result)
 
 // example of parse failure
 if (!((error = greatjson.parse('qwerty')) instanceof Error)) ;
-else console.log(error.toString())
+else
+	// SyntaxError: Unexpected token: expected json value, text:'qwerty' at line:1 column:1 position: 0 (0%)
+	console.log(error.toString())
 
 // example of missing comma
 if (!((error = greatjson.parse('{"a":5"b":6}')) instanceof Error)) ;
 else {
+	// SyntaxError: Bad token: expected object comma, text:'"b":6.' at line:1 column:7 position: 6 (50%)
 	console.log(error.toString())
 
 	// printout of custom error properties
 	var s = []
 	for (var p in error) s.push(p + ':' + error[p])
+	// Error properties: position:6 line:1 column:7 text:"b":6.
 	console.log('Error properties:', s.join(' '))
 }
-```
-
-The program prints:
-
-```
-It works! I got: 17
-SyntaxError: Unexpected token: expected json value, text:'qwerty' at line:1 column:1 position: 0 (0%)
-SyntaxError: Bad token: expected object comma, text:'"b":6.' at line:1 column:7 position: 6 (50%)
-Error properties: position:6 line:1 column:7 text:"b":6.
 ```
 
 # Notes
