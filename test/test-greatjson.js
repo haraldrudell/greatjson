@@ -48,6 +48,8 @@ function testParsing(test) {
 		'float': '[ 1, 1e1, -1E-1, 3.14, 0.5, -0.5, -0e+5]',
 		'stringEscapes': ' " \\" \\/ \\\\ \\b \\f \\n \\r \\t " ',
 		'hex escapes': ' " \\u0041\\u0062 " ',
+		'unbalanced object': '{\n"a":{\n"b":{\n}]] " ',
+		'unbalanced array': '[\n"a",\n[\n"b",\n{\n} }} " ',
 	}
 
 	for (var valueName in values) {
