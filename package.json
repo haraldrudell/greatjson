@@ -1,15 +1,13 @@
 {
-	"name": "webfiller",
-	"description": "Webfiller puts data and styling into Web pages on the server and in the browser, by Harald Rudell",
+	"name": "greatjson",
+	"description": "Parses json, JSON.parse equivalent except enhanced Syntax messages with location, expected tokens and offending text, errors are returned, not thrown. By Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)",
-	"homepage": "https://github.com/haraldrudell/webfiller",
-	"bugs": "https://github.com/haraldrudell/webfiller/issues",
-	"version": "0.0.2",
+	"homepage": "https://github.com/haraldrudell/greatjson",
+	"version": "0.0.1",
 	"contributors": [
 		"Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)"
 	],
 	"dependencies": {
-		"tagfinder": ""
 	},
 	"devDependencies": {
 		"nodeunit": "",
@@ -17,9 +15,9 @@
 	},
 	"repository" : {
 		"type" : "git",
-		"url" : "https://haraldrudell@github.com/haraldrudell/webfiller.git"
+		"url" : "https://haraldrudell@github.com/haraldrudell/greatjson.git"
 	},
-	"main": "lib/webfiller",
+	"main": "lib/greatjson",
 	"scripts": {
 		"test": "nodeunit test"
 	}

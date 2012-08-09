@@ -2,11 +2,11 @@
 
 var greatjson = require('../lib/greatjson')
 
-exports.testTopLevel = testTopLevel
+exports.testParsing = testParsing
+exports.testReviver = testReviver
 
-function testTopLevel(test) {
+function testParsing(test) {
 	var values = {
-/*
 		'undefined': undefined,
 		'null': null,
 		'false': false,
@@ -16,33 +16,58 @@ function testTopLevel(test) {
 		'1': 1,
 		'NaN': NaN,
 		'Infinity': Infinity,
-*/
 		'whitespace': ' \n \r \t ',
-/*
-		'zfalse': 'zfalse',
-*/
+		'Leading characters': 'zfalse',
+		'Trailing characters': 'falsez',
+		'Leading whitespace': '  \n  \r  \t  false',
+		'Trailing whitespace': 'false  \n  \r  \t  ',
+		'string': '  \n  "  z  "  \n  ',
+		'array': ' \n [  1  ,  2  ] \n ',
+		'object': ' \n {  " 2 " : [ 1 ],  "2":false}',
+		'tab in string': '\t"a\tb"\t',
+		'float': '[ 1, 1e1, -1E-1, 3.14, 0.5, -0.5, -0e+5]',
 	}
 
 	for (var valueName in values) {
-console.log('executing test:' + valueName)
+//console.log('executing test:' + valueName)
 		var input = values[valueName]
 		var expected
 		try {
 			expected = JSON.parse(input)
 		} catch (e) {
-console.log('note: JSON produced error:\'' + e.toString() + '\'')
+//console.log(e.toString())
 			expected = e
 		}
-if (!(expected instanceof Error)) console.log('note: JSON result:', expected)
-console.log('invoking greatjson')
+//if (!(expected instanceof Error)) console.log('JSON result:', expected)
 		var actual = greatjson.parse(input)
-if (!(actual instanceof Error)) console.log('greatjson done:', typeof actual, actual)
-		test.equal(typeof expected, typeof actual, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
-		if (!(expected instanceof Error)) test.deepEqual(expected, actual)
-else console.log(actual.toString())
-
-console.log()
+//if (!(actual instanceof Error)) console.log('greatjson result:', typeof actual, actual)
+		test.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
+		if (!(actual instanceof Error)) test.deepEqual(expected, actual)
+//else console.log(actual.toString())
+//console.log()
 	}
 
 	test.done()
+}
+
+function testReviver(test) {
+	var input = '[ "a", { "b": "c"}]'
+
+	var expected = JSON.parse(input, reviver)
+//console.log('JSON', typeof expected, JSON.stringify(expected))
+	var actual = greatjson.parse(input, reviver)
+//console.log('greatjson', typeof actual, JSON.stringify(actual))
+	test.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
+	if (!(actual instanceof Error)) test.deepEqual(expected, actual)
+
+	test.done()
+
+	function reviver(property, value) {
+//console.log(arguments.callee.name, this, typeof property, property, typeof value, value)
+		// delete the property of the object
+		if (property == 'b') return undefined
+		// add x to the 'a' value
+		if (property == '0') return value + 'x'
+		return value
+	}
 }
