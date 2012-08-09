@@ -1,11 +1,12 @@
-// test-jsonparse.js
+// test-greatjson.js
 
-var jsonparse = require('../lib/jsonparse')
+var greatjson = require('../lib/greatjson')
 
 exports.testTopLevel = testTopLevel
 
 function testTopLevel(test) {
 	var values = {
+/*
 		'undefined': undefined,
 		'null': null,
 		'false': false,
@@ -15,7 +16,11 @@ function testTopLevel(test) {
 		'1': 1,
 		'NaN': NaN,
 		'Infinity': Infinity,
+*/
 		'whitespace': ' \n \r \t ',
+/*
+		'zfalse': 'zfalse',
+*/
 	}
 
 	for (var valueName in values) {
@@ -29,12 +34,12 @@ console.log('note: JSON produced error:\'' + e.toString() + '\'')
 			expected = e
 		}
 if (!(expected instanceof Error)) console.log('note: JSON result:', expected)
-console.log('invoking jsonparse')
-		var actual = jsonparse.parse(input)
-console.log('jsonparse done', typeof actual, actual)
-		test.equal(typeof expected, typeof actual, 'Result types different: JSON:' + typeof expected + ' jsonparse:' + typeof actual)
+console.log('invoking greatjson')
+		var actual = greatjson.parse(input)
+if (!(actual instanceof Error)) console.log('greatjson done:', typeof actual, actual)
+		test.equal(typeof expected, typeof actual, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
 		if (!(expected instanceof Error)) test.deepEqual(expected, actual)
-else console.log('jsonparse error message:', actual.toString())
+else console.log(actual.toString())
 
 console.log()
 	}
