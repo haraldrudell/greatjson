@@ -1,4 +1,5 @@
 // test-greatjson.js
+// written by Harald Rudell in August, 2012
 
 var greatjson = require('../lib/greatjson')
 

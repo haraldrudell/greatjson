@@ -1,7 +1,7 @@
 // packagetest.js
 // test javascript and json syntax
 // (c) Harald Rudell 2012
-// 2012-08-05: Better printouts, main not required
+// 2012-08-09: keywords
 
 // http://nodejs.org/docs/latest/api/fs.html
 var fs = require('fs')
@@ -21,7 +21,7 @@ module.exports = {
 
 // this script should be put one level down from the deployment folder
 var deployFolder = path.join(__dirname, '..')
-packageJsonKeys = ['name', 'description', 'author', 'version', 'contributors', 'repository', 'devDependencies', 'dependencies', 'repository', 'scripts']
+packageJsonKeys = ['name', 'description', 'author', 'version', 'keywords', 'contributors', 'repository', 'devDependencies', 'dependencies', 'repository', 'scripts']
 // these defaults can be overriden by a file ./test-package.json
 var defaults = {
 	// list of paths, relative to the deployFolder that will not be searched

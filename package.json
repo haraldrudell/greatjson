@@ -2,6 +2,7 @@
 	"name": "greatjson",
 	"description": "Parses json, JSON.parse equivalent except enhanced Syntax messages with location, expected tokens and offending text, errors are returned, not thrown. By Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)",
+	"keywords": ["json", "parser", "json-js", "rfc4627", "json-sans-eval"],
 	"homepage": "https://github.com/haraldrudell/greatjson",
 	"version": "0.0.1",
 	"contributors": [
