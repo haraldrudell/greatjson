@@ -96,7 +96,7 @@ function testReviver(test) {
 }
 
 function testErrorProperties(test) {
-	var string = fs.readFileSync(path.join(__dirname, 'data', 'package.json'))
+	var string = fs.readFileSync(path.join(__dirname, 'data', 'packagex.json'))
 	var object = greatjson.parse(string)
 	test.ok(object instanceof Error, 'Failed to indicate error in bad package.json test')
 //console.log(object.toString())

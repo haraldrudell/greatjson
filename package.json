@@ -4,7 +4,7 @@
 	"author": "Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)",
 	"keywords": ["json", "parser", "json-js", "rfc4627", "json-sans-eval"],
 	"homepage": "https://github.com/haraldrudell/greatjson",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"contributors": [
 		"Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)"
 	],
