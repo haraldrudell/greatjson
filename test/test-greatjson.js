@@ -21,8 +21,8 @@ console.log('jsonStringEscapes:', regexps.jsonStringEscapes)
 console.log('jsonStringEscapeMap:', regexps.jsonStringEscapeMap)
 */
 
-exports['Parsing:'] = {
-	'Parse': function () {
+exports['JSON.Parse:'] = {
+	'Values': function () {
 		var values = {
 			'undefined': undefined,
 			'null': null,
@@ -70,11 +70,8 @@ exports['Parsing:'] = {
 	//else console.log(actual.toString()) // errors from greatjson
 	//console.log()
 		}
-	}
-}
-
-exports['Reviver'] = {
-	'Test': function () {
+	},
+	'Reviver': function () {
 		var input = '[ "a", { "b": "c"}]'
 
 		var expected = JSON.parse(input, reviver)
@@ -93,10 +90,7 @@ exports['Reviver'] = {
 			return value
 		}
 	},
-}
-
-exports['ErrorProperties'] = {
-	'Test': function () {
+	'Error properties': function () {
 		var string = fs.readFileSync(path.join(__dirname, 'data', 'packagex.json'))
 		var object = greatjson.parse(string)
 		assert.ok(object instanceof Error, 'Failed to indicate error in bad package.json test')
@@ -109,8 +103,7 @@ exports['ErrorProperties'] = {
 
 		var expected = 2
 		assert.equal(object.column, expected, 'Column property incorrect:' + object.column + ' instead of ' + expected)
-
-		var expected = 'z},.."repository" : '
-		assert.equal(object.text, expected, 'Text property incorrect: \'' + object.text + '\' instead of \'' + expected + '\'')
+		var expected = 'z},\n\t"repository" : '
+		assert.equal(object.text, expected, 'Text property incorrect')
 	},
 }
