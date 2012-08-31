@@ -2,25 +2,33 @@
 	"name": "greatjson",
 	"description": "JSON.parse replacement with clearer Syntax messages providing location, expected tokens and offending text. Errors are returned, not thrown. By Harald Rudell",
 	"author": "Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)",
-	"keywords": ["json", "parser", "json-js", "rfc4627", "json-sans-eval"],
+	"keywords": [
+		"json",
+		"parser",
+		"json-js",
+		"rfc4627",
+		"json-sans-eval"
+	],
 	"homepage": "https://github.com/haraldrudell/greatjson",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"contributors": [
 		"Harald Rudell <harald@allgoodapps.com> (http://www.haraldrudell.com)"
 	],
 	"dependencies": {
+		"haraldutil": "*"
 	},
 	"devDependencies": {
-		"nodeunit": "",
-		"uglify-js": "",
-		"greatjson": ""
+		"mochawrapper": ""
 	},
-	"repository" : {
-		"type" : "git",
-		"url" : "https://haraldrudell@github.com/haraldrudell/greatjson.git"
+	"repository": {
+		"type": "git",
+		"url": "https://haraldrudell@github.com/haraldrudell/greatjson.git"
 	},
 	"main": "lib/greatjson",
 	"scripts": {
-		"test": "nodeunit test"
+		"test": "mocha --ui exports --reporter spec",
+		"monitor": "mocha --ui exports --reporter min --watch",
+		"debugtest": "mocha --debug-brk --ui exports --reporter spec",
+		"coverage": "mochacoverage"
 	}
 }

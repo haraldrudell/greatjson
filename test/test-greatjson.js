@@ -1,15 +1,13 @@
 // test-greatjson.js
-// written by Harald Rudell in August, 2012
+// © Harald Rudell 2012
 
 var greatjson = require('../lib/greatjson')
 // http://nodejs.org/docs/latest/api/fs.html
 var fs = require('fs')
 // http://nodejs.org/api/path.html
 var path = require('path')
-
-exports.testParsing = testParsing
-exports.testReviver = testReviver
-exports.testErrorProperties = testErrorProperties
+// https://github.com/haraldrudell/mochawrapper
+var assert = require('mochawrapper')
 
 // check the regexps...
 /*
@@ -23,96 +21,96 @@ console.log('jsonStringEscapes:', regexps.jsonStringEscapes)
 console.log('jsonStringEscapeMap:', regexps.jsonStringEscapeMap)
 */
 
-function testParsing(test) {
-	var values = {
-		'undefined': undefined,
-		'null': null,
-		'false': false,
-		'true': true,
-		'Empty String' : '',
-		'0': 0,
-		'1': 1,
-		'NaN': NaN,
-		'Infinity': Infinity,
-		'whitespace': ' \n \r \t ',
-		'Leading characters': 'zfalse',
-		'Trailing characters': 'falsez',
-		'Leading whitespace': '  \n  \r  \t  false',
-		'Trailing whitespace': 'false  \n  \r  \t  ',
-		'string': '  \n  "  z  "  \n  ',
-		'array': ' \n [  1  ,  2  ] \n ',
-		'Empty array': '[]',
-		'object': ' \n {  " 2 " : [ 1 ],  "2":false}',
-		'Empty object': '{}',
-		'tab in string': '\t"a\tb"\t',
-		'float': '[ 1, 1e1, -1E-1, 3.14, 0.5, -0.5, -0e+5]',
-		'stringEscapes': ' " \\" \\/ \\\\ \\b \\f \\n \\r \\t " ',
-		'hex escapes': ' " \\u0041\\u0062 " ',
-		'unbalanced object': '{\n"a":{\n"b":{\n}]] " ',
-		'unbalanced array': '[\n"a",\n[\n"b",\n{\n} }} " ',
-	}
-
-	for (var valueName in values) {
-//console.log('executing test:' + valueName)
-		var input = values[valueName]
-		var expected
-		try {
-			expected = JSON.parse(input)
-		} catch (e) {
-//console.log(e.toString())
-			expected = e
+exports['Parsing:'] = {
+	'Parse': function () {
+		var values = {
+			'undefined': undefined,
+			'null': null,
+			'false': false,
+			'true': true,
+			'Empty String' : '',
+			'0': 0,
+			'1': 1,
+			'NaN': NaN,
+			'Infinity': Infinity,
+			'whitespace': ' \n \r \t ',
+			'Leading characters': 'zfalse',
+			'Trailing characters': 'falsez',
+			'Leading whitespace': '  \n  \r  \t  false',
+			'Trailing whitespace': 'false  \n  \r  \t  ',
+			'string': '  \n  "  z  "  \n  ',
+			'array': ' \n [  1  ,  2  ] \n ',
+			'Empty array': '[]',
+			'object': ' \n {  " 2 " : [ 1 ],  "2":false}',
+			'Empty object': '{}',
+			'tab in string': '\t"a\tb"\t',
+			'float': '[ 1, 1e1, -1E-1, 3.14, 0.5, -0.5, -0e+5]',
+			'stringEscapes': ' " \\" \\/ \\\\ \\b \\f \\n \\r \\t " ',
+			'hex escapes': ' " \\u0041\\u0062 " ',
+			'unbalanced object': '{\n"a":{\n"b":{\n}]] " ',
+			'unbalanced array': '[\n"a",\n[\n"b",\n{\n} }} " ',
 		}
-//if (!(expected instanceof Error)) console.log('JSON result:', expected)
-		var actual = greatjson.parse(input)
-//if (!(actual instanceof Error)) console.log('greatjson result:', typeof actual, actual)
-		test.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
-		test.equal(actual instanceof Error, expected instanceof Error, 'Result different wether Error: JSON:' + expected + ' greatjson:' + actual)
-		if (!(actual instanceof Error)) test.deepEqual(actual, expected)
-//else console.log(actual.toString()) // errors from greatjson
-//console.log()
-	}
 
-	test.done()
-}
-
-function testReviver(test) {
-	var input = '[ "a", { "b": "c"}]'
-
-	var expected = JSON.parse(input, reviver)
-//console.log('JSON', typeof expected, JSON.stringify(expected))
-	var actual = greatjson.parse(input, reviver)
-//console.log('greatjson', typeof actual, JSON.stringify(actual))
-	test.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
-	if (!(actual instanceof Error)) test.deepEqual(expected, actual)
-
-	test.done()
-
-	function reviver(property, value) {
-//console.log(arguments.callee.name, this, typeof property, property, typeof value, value)
-		// delete the property of the object
-		if (property == 'b') return undefined
-		// add x to the 'a' value
-		if (property == '0') return value + 'x'
-		return value
+		for (var valueName in values) {
+	//console.log('executing test:' + valueName)
+			var input = values[valueName]
+			var expected
+			try {
+				expected = JSON.parse(input)
+			} catch (e) {
+	//console.log(e.toString())
+				expected = e
+			}
+	//if (!(expected instanceof Error)) console.log('JSON result:', expected)
+			var actual = greatjson.parse(input)
+	//if (!(actual instanceof Error)) console.log('greatjson result:', typeof actual, actual)
+			assert.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
+			assert.equal(actual instanceof Error, expected instanceof Error, 'Result different wether Error: JSON:' + expected + ' greatjson:' + actual)
+			if (!(actual instanceof Error)) assert.deepEqual(actual, expected)
+	//else console.log(actual.toString()) // errors from greatjson
+	//console.log()
+		}
 	}
 }
 
-function testErrorProperties(test) {
-	var string = fs.readFileSync(path.join(__dirname, 'data', 'packagex.json'))
-	var object = greatjson.parse(string)
-	test.ok(object instanceof Error, 'Failed to indicate error in bad package.json test')
-//console.log(object.toString())
-	var expected = 633
-	test.equal(object.position, expected, 'Position property incorrect:' + object.position + ' instead of ' + expected)
+exports['Reviver'] = {
+	'Test': function () {
+		var input = '[ "a", { "b": "c"}]'
 
-	var expected = 17
-	test.equal(object.line, expected, 'Line property incorrect:' + object.position + ' instead of ' + expected)
+		var expected = JSON.parse(input, reviver)
+	//console.log('JSON', typeof expected, JSON.stringify(expected))
+		var actual = greatjson.parse(input, reviver)
+	//console.log('greatjson', typeof actual, JSON.stringify(actual))
+		assert.equal(typeof actual, typeof expected, 'Result types different: JSON:' + typeof expected + ' greatjson:' + typeof actual)
+		if (!(actual instanceof Error)) assert.deepEqual(expected, actual)
 
-	var expected = 2
-	test.equal(object.column, expected, 'Column property incorrect:' + object.column + ' instead of ' + expected)
+		function reviver(property, value) {
+	//console.log(arguments.callee.name, this, typeof property, property, typeof value, value)
+			// delete the property of the object
+			if (property == 'b') return undefined
+			// add x to the 'a' value
+			if (property == '0') return value + 'x'
+			return value
+		}
+	},
+}
 
-	var expected = 'z},.."repository" : '
-	test.equal(object.text, expected, 'Text property incorrect: \'' + object.text + '\' instead of \'' + expected + '\'')
+exports['ErrorProperties'] = {
+	'Test': function () {
+		var string = fs.readFileSync(path.join(__dirname, 'data', 'packagex.json'))
+		var object = greatjson.parse(string)
+		assert.ok(object instanceof Error, 'Failed to indicate error in bad package.json test')
+	//console.log(object.toString())
+		var expected = 633
+		assert.equal(object.position, expected, 'Position property incorrect:' + object.position + ' instead of ' + expected)
 
-	test.done()
+		var expected = 17
+		assert.equal(object.line, expected, 'Line property incorrect:' + object.position + ' instead of ' + expected)
+
+		var expected = 2
+		assert.equal(object.column, expected, 'Column property incorrect:' + object.column + ' instead of ' + expected)
+
+		var expected = 'z},.."repository" : '
+		assert.equal(object.text, expected, 'Text property incorrect: \'' + object.text + '\' instead of \'' + expected + '\'')
+	},
 }
