@@ -1,10 +1,17 @@
 # Great Json
 
-The **greatjson** module is a **JSON.parse** replacement providing clearer syntax messages with line and column numbers, expected tokens and offending text. In addition, errors are returned instead of thrown.
+The **greatjson** module is a **JSON.parse** replacement providing enhanced syntax messages.
 
-## Get It Now
+## Features
 
-* [GreatJson](https://github.com/haraldrudell/greatjson) is on github
+* Errors with line and column numbers, expected tokens and offending text
+* Errors are returned instead of thrown
+
+## Benefits
+
+* **Faster fixing** of bad json by using text location, expected tokens and the offending text provided by Great Json
+* Ability to customize **user-friendly error messages** by using the custom error properties Great Json provides
+* **Fewer lines** of code since errors are returned instead of thrown
 
 # Usage
 
@@ -22,26 +29,42 @@ if (!((result = greatjson.parse('17')) instanceof Error))
 // example of parse failure
 if (!((error = greatjson.parse('qwerty')) instanceof Error)) ;
 else
-	// SyntaxError: Unexpected token: expected json value, text:'qwerty' at line:1 column:1 position: 0 (0%)
+	/*
+	SyntaxError:
+	Unexpected token: expected json value,
+	text:'qwerty'
+	at line:1 column:1 position: 0 (0%)
+	*/
 	console.log(error.toString())
 
 // example of missing comma
 if (!((error = greatjson.parse('{"a":5"b":6}')) instanceof Error)) ;
 else {
-	// SyntaxError: Bad token: expected object comma, text:'"b":6.' at line:1 column:7 position: 6 (50%)
+	/*
+	SyntaxError: Bad token:
+	expected object comma from line:1 column:2 position: 1 (8%),
+	text:'"b":6}'
+	at line:1 column:7 position: 6 (50%)
+	*/
 	console.log(error.toString())
 
 	// printout of custom error properties
 	var s = []
 	for (var p in error) s.push(p + ':' + error[p])
-	// Error properties: position:6 line:1 column:7 text:"b":6.
+	/*
+	Error properties:
+	position:6
+	line:1
+	column:7
+	text:"b":6}
+	*/
 	console.log('Error properties:', s.join(' '))
 }
 ```
 
 # Notes
 
-(c) [Harald Rudell](http://www.haraldrudell.com) wrote this for the love of node in August, 2012
+(c) [Harald Rudell](http://www.haraldrudell.com) wrote this for node in August, 2012
 
 Great Json is based on work by
 
