@@ -2,16 +2,16 @@
 
 The **greatjson** module is a **JSON.parse** replacement providing enhanced syntax messages.
 
-## Features
-
-* Errors with line and column numbers, expected tokens and offending text
-* Errors are returned instead of thrown
-
 ## Benefits
 
-* **Faster fixing** of bad json by using text location, expected tokens and the offending text provided by Great Json
-* Ability to customize **user-friendly error messages** by using the custom error properties Great Json provides
-* **Fewer lines** of code since errors are returned instead of thrown
+1. **Faster fixing** of bad json by using text location, expected tokens and the offending text provided by Great Json
+2. Ability to customize **user-friendly error messages** by using the custom error properties Great Json provides
+3. **Fewer lines** of code since errors are returned instead of thrown
+
+## Features
+
+1. Errors with line and column numbers, expected tokens and offending text
+2. Errors are returned instead of thrown
 
 # Usage
 
